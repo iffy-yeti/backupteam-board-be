@@ -13,17 +13,53 @@ const scores = [
 // for문의 경우에는 전부 이름으로 된 배열을 반환하는 한편, filter를 사용하면 배열 내 객체들로 이루어진 배열을 반환한다.
 // for문을 사용했을 때처럼 이름으로만 이루어진 배열로 반환하도록 수정한다
 
-const unders = scores.filter(score => score.score < 40)
-.map(under => under.name)
+// const yulramen = []
+// for(let i = 0; i < scores.length; i++) {
+//     if(scores[i].score < 40){
+//     yulramen.push(scores[i].name)
+//     }
+// }
+// console.log(yulramen)
 
-console.log(unders)
+// const yulramen = scores.filter((score) => {
+//     if (score.score < 40) {
+//         return true
+//     } else {
+//         return false
+//     }
+// })
+
+// const yulramen = scores.filter((score) => {
+//     const result = score.score < 40 ? true : false 
+//     return result
+// })
+
+// const yulramen = scores.filter((score) => {
+//     return score.score < 40 ? true : false 
+// })
+
+// const yulramen = scores.filter((score) => {
+//     return score.score < 40
+// })
+
+const yulramen = scores.filter(변수 => 변수.score < 40)
+.map(다른변수 => 다른변수.name)
+console.log(yulramen)
 
 // 3. 가장 공부를 잘했던 “지영”의 점수 확인
 // for문의 경우 "지영"의 score만 변수에 할당되는 한편, find를 사용하면 "지영"의 객체를 반환한다.
 // 이 때 지영의 score만 할당되도록 수정한다
 
-const jiyoung = scores.find(score => score.name === "지영")
-console.log("지영's score: ", jiyoung.score)
+// let 지영점수 = null
+// for(let i = 0; i < scores.length; i++){
+//     if(scores[i].name === '지영'){
+//         지영점수 = scores[i].score
+//     }
+// }
+// console.log(지영점수)
+
+const 지영점수 = scores.find(score => score.name === '지영')
+console.log(지영점수.score)
 
 // 4. 아래처럼 영화 제목 게시판의 객체로 이루어진 배열과 영화 제목을 작성한 사용자로 이루어진 객체가 있다.
 // movies 의 user_id 는 users 의 id 를 참조 한다
@@ -64,10 +100,33 @@ const users = [
 ]
 
 // 4-1. 모든 movies를 반환하는 개발을 한다. 단, movie를 작성한 user의 이름을 포함해라
+// movies를 전체 반환하면서 각 영화별 users의 user name이 나오게 하쇼
 
+// const 빈배열 = []
+// for(let i = 0; i < movies.length; i++){
+//     if(movies[i].user_id === users.id){
+//         return 빈배열.push({
+//             ...movie[i], 
+//             name: users.name
+//         })
+//     }
+// }
+// console.log(빈배열)
 
+const 빈배열 = movies.map(movie => ({
+    ...movie,
+    name: users.find(user => user.id === movie.user_id).name
+}))
+console.log(빈배열)
 
 // 4-2. id가 1번에 해당하는 user가 작성한 영화 movie_title로만 이루어진 배열을 가져온다.
 
+const 에이씨 = movies.filter(movie => movie.user_id === 1)
+.map(moving => moving.movie_title)
+console.log(에이씨)
 
 // 4-3. Looney Tunes: Back in Action라는 movie_title을 가진 게시물의 작성자의 이메일을 가져온다.
+
+const 루니툰 = movies.find(movie => movie.movie_title === "Looney Tunes: Back in Action").user_id
+const 루니툰이메일 = users.find(user => user.id === 루니툰).email
+console.log(루니툰이메일)

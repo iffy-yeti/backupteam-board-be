@@ -1,4 +1,3 @@
-
 // 반복문 예제
 
 // 1. 1 부터 10 까지 console.log() 를 사용하여 출력하시오.
@@ -45,10 +44,9 @@
 
 // 7. array = [1,2,3,4,5] 배열안에 짝수만 출력하시오.
 
-const array = [1, 2, 3, 4, 5]
-for(let i = 0; i < array.length; i++) {
-  if(array[i] % 2 === 0) {
-    console.log(array[i])
+const array = [1, 2, 3, 4, 5];
+for (let i = 0; i < array.length; i++) {
+  if (array[i] % 2 === 0) {
+    console.log(array[i]);
   }
 }
-
