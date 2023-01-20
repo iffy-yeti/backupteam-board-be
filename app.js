@@ -1,5 +1,6 @@
 const express = require('express')
 const cookieParser = require ('cookie-parser')
+const cors = require('cors')
 
 const app = express()
 const port = 9000
@@ -38,13 +39,14 @@ const users = [
     {id: 10,name: "Kaylee Jakoubec", email: "kjakoubec2i@epa.gov"}
 ]
 
+app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
 
 app.get("/movies", (req, res) => {
     res.send(movies.map(movie => ({
         ...movie,
-        name: users.find(유저 => 유저.id === movie.user_id)
+        name: users.find(유저 => 유저.id === movie.user_id).name
     })))
 })
 //{유저.id === movie.user_id} 중괄호 떼니까 된당 - name이 들어가진당
@@ -70,7 +72,24 @@ app.get('/movies/:id', (req, res) => {
     }
     console.log(movies)
     res.send(views)
+
+
+	// // 1. 사용자가 보내준 id 를 가져온다
+    // const { id } = req.params
+    // // 2. id 에 해당하는 movie 를 가져온다
+    // const thisMovie = movies.find((movie) => movie.id === id)
+    // // 3. 가져온 movie 에서 hit_count 1을 더한 객체를 만든다
+    // const countHit = thisMovie.find((movie) => movie.id)
+    // countHit.hit_count += 1
+    // // 4. hit_count 1을 더한 객체를 movies 내에서 기존 객체에 치환한다. (findIndex, splice 사용)
+    // const countPush = movies.find((movie) => movie.id === id)
+    // movies.splice(countPush, 1, countHit)
+
+    // console.log(movies)
+    // // 5. hit_count 1을 더한 객체를 반환한다.
+    // res.send(thisMovie)
 })
+
 
 app.listen(port, () => {
     console.log('포트로 서버가 열렸슈')
