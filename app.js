@@ -57,7 +57,7 @@ app.post("/movies", (req, res) => {
     영화등록.hit_count = 0
     영화등록.created_at = new Date().toISOString()
     movies.push(영화등록)
-    res.send("영화등록입니다요")
+    res.send(영화등록)
 })
 
 app.get('/movies/:id', (req, res) => {
