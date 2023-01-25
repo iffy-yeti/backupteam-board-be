@@ -45,6 +45,8 @@ app.use(cookieParser())
 
 app.get("/movies", (req, res) => {
 
+    const page = req.query.page || 1
+
     const moviesList = movies.map(movie => ({
         ...movie,
         name: users.find(user => user.id === movie.user_id).name
@@ -55,7 +57,24 @@ app.get("/movies", (req, res) => {
         const curTimestamp = new Date(b.created_at).getTime()
         return curTimestamp - preTimestamp
     })
-    res.send(moviesList)
+
+    const movieAi = [...moviesList]
+    //splice로 잘려서 2페이지 갔다가 1페이지 가면 사라져있어서 복제배열로 나눠주기위함 - 시간도 정렬이 .... 됐는디......
+    //정렬된 배열을 복제 배열로 가져오면 정렬된 배열에 splice가 적용된다. moviesLsit는 이미 정렬된것이지 맞쥐 movieAi를 splice하면 정렬된 배열을 
+    //splice 하는것이라고 지0센세가...
+    const lastPage = Math.ceil(movies.length / 10)
+    // console.log(lastPage)
+    const startIndex = (page - 1) * 10
+    // 각각의 페이지에 시작 인덱스가 필요해서 startIndex 씀 0번쨰~10번째 인덱스의 시작을 
+    const paginationMovies = movieAi.splice(startIndex, 10)
+    //삭제된거 들어간다 얘는 
+    // console.log(pagination)
+
+    res.send({
+        pageInfo: {lastPage}, 
+        movies: paginationMovies
+    })
+    
 
 //아래는 원래 내가 쓴것들!--------------
     // res.send(movies.map(movie => ({
@@ -70,7 +89,7 @@ app.post("/movies", (req, res) => {
     영화등록.id = movies[movies.length - 1].id + 1 //인덱스 값 -- movies에서 2번이 없음
     영화등록.hit_count = 0
     영화등록.created_at = new Date().toISOString()
-    movies.push(영화등록)
+    movies.unshift(영화등록)
     res.send(영화등록)
 })
 

@@ -23,3 +23,5 @@ console.log(orr);
 //[1, 4, 5]
 console.log(resolt);
 //[2, 3]
+
+//find 연습
