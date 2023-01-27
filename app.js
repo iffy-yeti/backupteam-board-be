@@ -15,6 +15,17 @@ app.use(cookieParser());
 
 //따라 바꿔보기
 function getMoviesByPage(page) {
+  const moviesList = movies.map((movie) => ({
+    //moviesList 자리 옮겼음 밑에 있으면 안읽혀서
+    ...movie,
+    name: users.find((user) => user.id === movie.user_id).name,
+  }));
+
+  moviesList.sort((a, b) => {
+    const preTimestamp = new Date(a.created_at).getTime();
+    const curTimestamp = new Date(b.created_at).getTime();
+    return curTimestamp - preTimestamp;
+  });
   const movieAi = [...moviesList];
   //splice로 잘려서 2페이지 갔다가 1페이지 가면 사라져있어서 복제배열로 나눠주기위함 - 시간도 정렬이 .... 됐는디......
   //정렬된 배열을 복제 배열로 가져오면 정렬된 배열에 splice가 적용된다. moviesLsit는 이미 정렬된것이지 맞쥐 movieAi를 splice하면 정렬된 배열을
@@ -29,26 +40,20 @@ function getMoviesByPage(page) {
 
 
   // const moviesList = movies.map((movie) => ({
-  const moviesList = movies.map((movie) => ({
-    ...movie,
-    name: users.find((user) => user.id === movie.user_id).name,
-  }));
+  return {
+    paginationMovies,
+    lastPage
+  }
 
-  moviesList.sort((a, b) => {
-    const preTimestamp = new Date(a.created_at).getTime();
-    const curTimestamp = new Date(b.created_at).getTime();
-    return curTimestamp - preTimestamp;
-  });
+  
 }
 
 app.get("/movies", (req, res) => {
   const page = req.query.page || 1;
 
   const paginationMovies = getMoviesByPage(page)
-  res.send({
-    pageInfo: { lastPage },
-    movies: paginationMovies
-  });
+
+  res.send(paginationMovies);
 });
 
 //아래는 원래 내가 쓴것들!--------------
