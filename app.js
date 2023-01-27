@@ -15,9 +15,20 @@ app.use(cookieParser());
 
 //따라 바꿔보기
 function getMoviesByPage(page) {
-  const moviesList = movies.map((movie) => ({
+  const movieAi = [...movies];
+  //splice로 잘려서 2페이지 갔다가 1페이지 가면 사라져있어서 복제배열로 나눠주기위함 - 시간도 정렬이 .... 됐는디......
+  //정렬된 배열을 복제 배열로 가져오면 정렬된 배열에 splice가 적용된다. moviesLsit는 이미 정렬된것이지 맞쥐 movieAi를 splice하면 정렬된 배열을
+  //splice 하는것이라고 지0센세가...
+
+  const startIndex = (page - 1) * 10;
+  // 각각의 페이지에 시작 인덱스가 필요해서 startIndex 씀 0번쨰~10번째 인덱스의 시작을
+ 
+  const paginationMovies = movieAi.splice(startIndex, 10);
+  //삭제된거 들어간다 얘는
+  // console.log(pagination)
+  const moviesList = paginationMovies.map((movie) => ({
     //moviesList 자리 옮겼음 밑에 있으면 안읽혀서
-    ...movie,
+    ...movie, //다 가져오는거
     name: users.find((user) => user.id === movie.user_id).name,
   }));
 
@@ -26,22 +37,13 @@ function getMoviesByPage(page) {
     const curTimestamp = new Date(b.created_at).getTime();
     return curTimestamp - preTimestamp;
   });
-  const movieAi = [...moviesList];
-  //splice로 잘려서 2페이지 갔다가 1페이지 가면 사라져있어서 복제배열로 나눠주기위함 - 시간도 정렬이 .... 됐는디......
-  //정렬된 배열을 복제 배열로 가져오면 정렬된 배열에 splice가 적용된다. moviesLsit는 이미 정렬된것이지 맞쥐 movieAi를 splice하면 정렬된 배열을
-  //splice 하는것이라고 지0센세가...
+  
   const lastPage = Math.ceil(movies.length / 10);
   // console.log(lastPage)
-  const startIndex = (page - 1) * 10;
-  // 각각의 페이지에 시작 인덱스가 필요해서 startIndex 씀 0번쨰~10번째 인덱스의 시작을
-  const paginationMovies = movieAi.splice(startIndex, 10);
-  //삭제된거 들어간다 얘는
-  // console.log(pagination)
 
-
-  // const moviesList = movies.map((movie) => ({
+  // const moviesList = movies.map((movie) => ({`
   return {
-    paginationMovies,
+    moviesList,
     lastPage
   }
 
