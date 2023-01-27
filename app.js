@@ -12,6 +12,8 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
+
+//따라 바꿔보기
 function getMoviesByPage(page) {
   const movieAi = [...moviesList];
   //splice로 잘려서 2페이지 갔다가 1페이지 가면 사라져있어서 복제배열로 나눠주기위함 - 시간도 정렬이 .... 됐는디......
